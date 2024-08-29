@@ -26,7 +26,8 @@ const Header = ({ user, onLogout }) => {
               </>
             ) : (
               <>
-            
+                <Nav.Link as={Link} to="/Dashboard">Dashboard</Nav.Link>
+
                 <NavDropdown title={`${user.firstName} ${user.lastName} (${user.role})`} id="basic-nav-dropdown">
                   <NavDropdown.Item as={Button} onClick={handleLogout}>Logout</NavDropdown.Item>
                 </NavDropdown>

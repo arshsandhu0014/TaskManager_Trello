@@ -7,18 +7,17 @@ const Register = () => {
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('student');
+ 
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/register', {
+      const response = await axios.post('http://localhost:3000/auth/register', {
         firstName,
         lastName,
         username,
         password,
-        role
       });
       console.log('Registration successful!', response.data);
       // Show alert
@@ -79,14 +78,7 @@ const Register = () => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="role" className="form-label">Role:</label>
-                  <select id="role" className="form-select" value={role} onChange={(e) => setRole(e.target.value)}>
-                    <option value="student">Student</option>
-                    <option value="doctor">Doctor</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                </div>
+              
                 <button type="submit" className="btn btn-primary">Register</button>
               </form>
               {error && <div className="mt-3 text-danger">{error}</div>}

@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import axios from 'axios';
-
-import "./Login.css"
+import './Login.css';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -13,18 +12,19 @@ const Login = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/login', {
+      const response = await axios.post('http://localhost:3000/auth/login', {
         username,
         password
       });
+      localStorage.setItem('token', response.data.token);
       console.log('Login successful!', response.data);
       // Call the onLogin function passed from the parent component to handle authentication
       onLogin(response.data);
       // Redirect to dashboard after successful login
       navigate('/');
     } catch (error) {
-      console.error('Login failed:', error.response.data.message);
-      setError(error.response.data.message);
+      console.error('Login failed:', error.response ? error.response.data.message : error.message);
+      setError(error.response ? error.response.data.message : 'Login failed');
     }
   };
 

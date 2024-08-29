@@ -7,9 +7,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Routes
-const appointmentRoutes = require('./routes/appointmentRoutes');
+const taskRoutes = require('./routes/taskRoutes');
 app.use('/api/appointments', appointmentRoutes);
-
+app.use('/api/tasks', taskRoutes);
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
