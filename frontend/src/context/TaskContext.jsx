@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const TaskContext = createContext();
@@ -6,6 +6,23 @@ export const TaskContext = createContext();
 export const TaskProvider = ({ children }) => {
     const [tasks, setTasks] = useState([]);
 
+    // Function to fetch tasks from the server
+    const fetchTasks = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            console.log('Token:', token); // Debugging log
+            const response = await axios.get('http://localhost:3000/tasks', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            setTasks(response.data);
+        } catch (error) {
+            console.error('Error fetching tasks:', error);
+        }
+    };
+
+    // Function to add a new task
     const addTask = async (task) => {
         try {
             const token = localStorage.getItem('token');
@@ -26,12 +43,13 @@ export const TaskProvider = ({ children }) => {
         }
     };
 
+    // Function to update a task's column
     const updateTaskColumn = async (updatedTask) => {
         try {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
             const response = await axios.put(
-                `http://localhost:3000/tasks/${updatedTask._id}`,
+                `http://localhost:3000/tasks/${updatedTask._id}/column`,
                 { column: updatedTask.column },
                 {
                     headers: {
@@ -50,12 +68,13 @@ export const TaskProvider = ({ children }) => {
         }
     };
 
+    // Function to move a task to a different column
     const moveTask = async ({ id, fromColumn, toColumn }) => {
         try {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
             const response = await axios.put(
-                `http://localhost:3000/tasks/${id}`,
+                `http://localhost:3000/tasks/${id}/column`,
                 { column: toColumn },
                 {
                     headers: {
@@ -74,8 +93,13 @@ export const TaskProvider = ({ children }) => {
         }
     };
 
+    // Fetch tasks on component mount
+    useEffect(() => {
+        fetchTasks();
+    }, []);
+
     return (
-        <TaskContext.Provider value={{ tasks, setTasks, addTask, updateTaskColumn, moveTask }}>
+        <TaskContext.Provider value={{ tasks, setTasks, addTask, updateTaskColumn, moveTask, fetchTasks }}>
             {children}
         </TaskContext.Provider>
     );

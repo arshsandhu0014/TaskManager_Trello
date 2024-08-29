@@ -31,8 +31,21 @@ const login = async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
+
+    // Generate JWT token
     const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
-    res.json({ token });
+
+    // Respond with token and user details
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username
+        
+      }
+    });
   } catch (error) {
     res.status(500).json({ message: 'Error logging in' });
   }

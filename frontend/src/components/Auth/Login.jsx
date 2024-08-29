@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
 
@@ -17,9 +17,12 @@ const Login = ({ onLogin }) => {
         password
       });
       localStorage.setItem('token', response.data.token);
+      // Store user details in local storage or handle them as needed
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      
       console.log('Login successful!', response.data);
       // Call the onLogin function passed from the parent component to handle authentication
-      onLogin(response.data);
+      onLogin(response.data.user); // Pass user details to onLogin function
       // Redirect to dashboard after successful login
       navigate('/');
     } catch (error) {

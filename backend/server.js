@@ -22,13 +22,11 @@ connection.once('open', () => {
     console.log('MongoDB database connection established successfully');
 });
 
-// Mount authentication routes
+
 app.use('/auth', authRoutes);
 
-// Mount task routes (protected)
 app.use('/tasks', protect, taskRoutes);
 
-// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');

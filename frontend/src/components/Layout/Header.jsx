@@ -4,7 +4,12 @@ import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 
 const Header = ({ user, onLogout }) => {
   const navigate = useNavigate();
-  console.log(user);
+  
+
+  // Default values if user is not provided
+  const userFirstName = user?.firstName || 'Guest';
+  const userLastName = user?.lastName || '';
+  const userRole = user?.role || '';
 
   const handleLogout = () => {
     onLogout();
@@ -14,7 +19,7 @@ const Header = ({ user, onLogout }) => {
   return (
     <Navbar bg="light" expand="lg">
       <div className="container">
-        <Navbar.Brand as={Link} to="/">S-cure</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">Task-Manager</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
@@ -26,9 +31,8 @@ const Header = ({ user, onLogout }) => {
               </>
             ) : (
               <>
-                <Nav.Link as={Link} to="/Dashboard">Dashboard</Nav.Link>
-
-                <NavDropdown title={`${user.firstName} ${user.lastName} (${user.role})`} id="basic-nav-dropdown">
+                <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>
+                <NavDropdown title={`${userFirstName} ${userLastName} `} id="basic-nav-dropdown">
                   <NavDropdown.Item as={Button} onClick={handleLogout}>Logout</NavDropdown.Item>
                 </NavDropdown>
               </>

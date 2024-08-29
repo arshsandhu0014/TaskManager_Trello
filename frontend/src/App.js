@@ -11,6 +11,8 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile'; // Ensure Profile is used or remove if not needed
 import ErrorBoundary from './components/ErrorBoundary';
 import Home from "./pages/Home";
+import PrivateRoute from './components/PrivateRoute';
+
 function App() {
   const [user, setUser] = useState(null);
 
@@ -31,11 +33,13 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Home/>} />
+          <Route path="/" element={<Home />} />
           <Route path='/dashboard' element={
-            <ErrorBoundary>
-              <Dashboard />
-            </ErrorBoundary>
+            <PrivateRoute element={
+              <ErrorBoundary>
+                <Dashboard />
+              </ErrorBoundary>
+            } user={user} />
           } />
           {/* Add other routes here */}
         </Routes>

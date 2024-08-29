@@ -1,5 +1,6 @@
 const Task = require('../models/Task');
 
+
 exports.getTasks = async (req, res) => {
     try {
         const tasks = await Task.find({ user: req.user._id });
@@ -83,9 +84,11 @@ exports.deleteTask = async (req, res) => {
             return res.status(404).json({ message: 'Task not found' });
         }
 
-        await task.remove();
+        await Task.findByIdAndDelete(id); // Use findByIdAndDelete
         res.json({ message: 'Task removed' });
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting task' });
+        console.error('Error deleting task:', error.message); // Enhanced logging
+        res.status(500).json({ message: 'Error deleting task', error: error.message }); // Return detailed error message
     }
 };
+
