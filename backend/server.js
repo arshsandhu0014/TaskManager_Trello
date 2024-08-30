@@ -11,22 +11,33 @@ const authRoutes = require('./routes/authRoutes');
 const protect = require('./middleware/authMiddleware');
 
 const app = express();
-app.use(cors());
+
+// Set up CORS to allow only your frontend's origin
+const allowedOrigins = ['https://task-manager-trello-2yri.vercel.app']; // Replace with your actual frontend URL
+app.use(cors({
+    origin: function(origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
-const MONGODB_URI = 'mongodb://localhost:27017/TaskManager';
-const secretKey = 'your_secret_key_here'; // Hardcoded secret key
-const client = new OAuth2Client('493906680508-07evjgesmlano1r3rsnb4sac6bgfgk6g.apps.googleusercontent.com'); // Replace with your actual client ID
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/TaskManager';
+const secretKey = process.env.JWT_SECRET || 'your_secret_key_here';
+const googleClientId = process.env.GOOGLE_CLIENT_ID || '493906680508-07evjgesmlano1r3rsnb4sac6bgfgk6g.apps.googleusercontent.com';
+const client = new OAuth2Client(googleClientId);
 
-mongoose.connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
-const connection = mongoose.connection;
-connection.once('open', () => {
+mongoose.connect(MONGODB_URI).then(() => {
     console.log('MongoDB database connection established successfully');
+}).catch((err) => {
+    console.error('MongoDB connection error:', err);
 });
 
 // Google authentication route
@@ -36,7 +47,7 @@ app.post('/auth/google', async (req, res) => {
     try {
         const ticket = await client.verifyIdToken({
             idToken: id_token,
-            audience: '493906680508-07evjgesmlano1r3rsnb4sac6bgfgk6g.apps.googleusercontent.com' // Replace with your actual client ID
+            audience: googleClientId // Use environment variable
         });
 
         const payload = ticket.getPayload();
@@ -69,6 +80,7 @@ app.post('/auth/google', async (req, res) => {
             }
         });
     } catch (error) {
+        console.error('Error verifying Google token:', error);
         res.status(401).json({ error: 'Invalid token' });
     }
 });
