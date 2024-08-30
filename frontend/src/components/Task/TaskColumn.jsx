@@ -12,7 +12,7 @@ const TaskColumn = ({ columnName, tasks }) => {
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState(null);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery] = useState('');
     const [sortOption, setSortOption] = useState('newest');
 
     const handleEditTask = async () => {

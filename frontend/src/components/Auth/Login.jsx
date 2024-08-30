@@ -9,7 +9,7 @@ import './Login.css';
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+ 
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState(''); // 'success' or 'error'
   const navigate = useNavigate();
