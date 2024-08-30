@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { GoogleLogin } from '@react-oauth/google';
 import './Login.css';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,17 +18,31 @@ const Login = ({ onLogin }) => {
         password
       });
       localStorage.setItem('token', response.data.token);
-      // Store user details in local storage or handle them as needed
       localStorage.setItem('user', JSON.stringify(response.data.user));
       
       console.log('Login successful!', response.data);
-      // Call the onLogin function passed from the parent component to handle authentication
-      onLogin(response.data.user); // Pass user details to onLogin function
-      // Redirect to dashboard after successful login
+      onLogin(response.data.user);
       navigate('/');
     } catch (error) {
       console.error('Login failed:', error.response ? error.response.data.message : error.message);
       setError(error.response ? error.response.data.message : 'Login failed');
+    }
+  };
+
+  const handleGoogleSuccess = async (response) => {
+    try {
+      const res = await axios.post('http://localhost:3000/auth/google', {
+        id_token: response.credential
+      });
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      
+      console.log('Google login successful!', res.data);
+      onLogin(res.data.user);
+      navigate('/');
+    } catch (error) {
+      console.error('Google login failed:', error.response ? error.response.data.message : error.message);
+      setError(error.response ? error.response.data.message : 'Google login failed');
     }
   };
 
@@ -61,6 +76,15 @@ const Login = ({ onLogin }) => {
                 </div>
                 <button type="submit" className="btn btn-primary">Login</button>
               </form>
+              <div className="mt-3">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onFailure={(error) => {
+                    console.error('Google login error:', error);
+                    setError('Google login failed');
+                  }}
+                />
+              </div>
               {error && <div className="mt-3 text-danger">{error}</div>}
             </div>
           </div>
