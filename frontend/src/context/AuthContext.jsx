@@ -1,4 +1,3 @@
-// src/context/AuthContext.js
 
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
@@ -18,7 +17,7 @@ export const AuthProvider = ({ children }) => {
                 throw new Error('No token found');
             }
 
-            const response = await axios.get('http://localhost:3000/tasks', {
+            const response = await axios.get('https://taskmanager-trello.onrender.com/tasks', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },

@@ -45,7 +45,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/auth/register', {
+      const response = await axios.post('https://taskmanager-trello.onrender.com/auth/register', {
         firstName,
         lastName,
         username,

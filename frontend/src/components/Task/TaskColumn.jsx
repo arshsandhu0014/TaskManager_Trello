@@ -19,7 +19,7 @@ const TaskColumn = ({ columnName, tasks }) => {
         try {
             const token = localStorage.getItem('token');
             await axios.put(
-                `http://localhost:3000/tasks/${editingTaskId}`,
+                `https://taskmanager-trello.onrender.com/tasks/${editingTaskId}`,
                 editedTask,
                 {
                     headers: {
@@ -50,7 +50,7 @@ const TaskColumn = ({ columnName, tasks }) => {
         if (confirmDelete) {
             try {
                 const token = localStorage.getItem('token');
-                await axios.delete(`http://localhost:3000/tasks/${taskId}`, {
+                await axios.delete(`https://taskmanager-trello.onrender.com/tasks/${taskId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }
@@ -194,7 +194,7 @@ const TaskColumn = ({ columnName, tasks }) => {
                                     <h4>{selectedTask.title}</h4>
                                     <p>{selectedTask.description}</p>
                                     <p><strong>Created At:</strong> {selectedTask.createdAt}</p>
-                                    <p><strong>Due Date:</strong> {selectedTask.dueDate}</p>
+                                   
                                     {/* Add more fields as needed */}
                                 </div>
                             )}
@@ -207,43 +207,47 @@ const TaskColumn = ({ columnName, tasks }) => {
                     </Modal>
 
                     {/* Modal for editing tasks */}
-                    <Modal show={showEditModal} onHide={handleCloseEditModal}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Edit Task</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form>
-                                <Form.Group>
-                                    <Form.Control
-                                        type="text"
-                                        value={editedTask.title}
-                                        onChange={(e) =>
-                                            setEditedTask({ ...editedTask, title: e.target.value })
-                                        }
-                                        placeholder="Edit title"
-                                    />
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Control
-                                        as="textarea"
-                                        value={editedTask.description}
-                                        onChange={(e) =>
-                                            setEditedTask({ ...editedTask, description: e.target.value })
-                                        }
-                                        placeholder="Edit description"
-                                    />
-                                </Form.Group>
-                            </Form>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={handleCloseEditModal}>
-                                Cancel
-                            </Button>
-                            <Button variant="primary" onClick={handleEditTask}>
-                                Save
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
+                    <Modal show={showEditModal} onHide={handleCloseEditModal} centered>
+            <Modal.Header closeButton>
+                <Modal.Title>Edit Task</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Task Title</Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={editedTask.title}
+                            onChange={(e) =>
+                                setEditedTask({ ...editedTask, title: e.target.value })
+                            }
+                            placeholder="Edit title"
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Task Description</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            value={editedTask.description}
+                            onChange={(e) =>
+                                setEditedTask({ ...editedTask, description: e.target.value })
+                            }
+                            placeholder="Edit description"
+                            rows={3}
+                        />
+                    </Form.Group>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseEditModal}>
+                    Cancel
+                </Button>
+                <Button variant="primary" onClick={handleEditTask}>
+                    Save
+                </Button>
+            </Modal.Footer>
+        </Modal>
                 </div>
             )}
         </Droppable>

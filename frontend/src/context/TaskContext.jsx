@@ -11,7 +11,7 @@ export const TaskProvider = ({ children }) => {
         try {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
-            const response = await axios.get('http://localhost:3000/tasks', {
+            const response = await axios.get('https://taskmanager-trello.onrender.com/tasks', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }
@@ -28,7 +28,7 @@ export const TaskProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
             const response = await axios.post(
-                'http://localhost:3000/tasks',
+                'https://taskmanager-trello.onrender.com/tasks',
                 task,
                 {
                     headers: {
@@ -49,7 +49,7 @@ export const TaskProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
             const response = await axios.put(
-                `http://localhost:3000/tasks/${updatedTask._id}/column`,
+                `https://taskmanager-trello.onrender.com/tasks/${updatedTask._id}/column`,
                 { column: updatedTask.column },
                 {
                     headers: {
@@ -74,7 +74,7 @@ export const TaskProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
             const response = await axios.put(
-                `http://localhost:3000/tasks/${id}/column`,
+                `https://taskmanager-trello.onrender.com/tasks/${id}/column`,
                 { column: toColumn },
                 {
                     headers: {

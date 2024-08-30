@@ -9,7 +9,7 @@ const Header = ({ user, onLogout }) => {
   // Default values if user is not provided
   const userFirstName = user?.firstName || 'Guest';
   const userLastName = user?.lastName || '';
-  const userRole = user?.role || '';
+ 
 
   const handleLogout = () => {
     onLogout();
@@ -31,6 +31,7 @@ const Header = ({ user, onLogout }) => {
               </>
             ) : (
               <>
+            
                 <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>
                 <NavDropdown title={`${userFirstName} ${userLastName} `} id="basic-nav-dropdown">
                   <NavDropdown.Item as={Button} onClick={handleLogout}>Logout</NavDropdown.Item>

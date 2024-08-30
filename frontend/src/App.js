@@ -9,7 +9,7 @@ import Footer from './components/Layout/Footer';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Dashboard from './pages/Dashboard';
-import Profile from './pages/Profile';
+
 import ErrorBoundary from './components/ErrorBoundary';
 import Home from "./pages/Home";
 import PrivateRoute from './components/PrivateRoute';
@@ -36,6 +36,8 @@ function App() {
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
+            
+
             <Route path='/dashboard' element={
               <PrivateRoute element={
                 <ErrorBoundary>

@@ -35,7 +35,7 @@ const Login = ({ onLogin }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/auth/login', {
+      const response = await axios.post('https://taskmanager-trello.onrender.com/auth/login', {
         username,
         password
       });
@@ -54,7 +54,7 @@ const Login = ({ onLogin }) => {
 
   const handleGoogleSuccess = async (response) => {
     try {
-      const res = await axios.post('http://localhost:3000/auth/google', {
+      const res = await axios.post('https://taskmanager-trello.onrender.com/auth/google', {
         id_token: response.credential
       });
       localStorage.setItem('token', res.data.token);

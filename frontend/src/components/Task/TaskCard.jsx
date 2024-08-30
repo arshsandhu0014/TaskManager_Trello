@@ -11,7 +11,7 @@ const TaskComponent = ({ task }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `http://localhost:3000/tasks/${task._id}/column`,
+                `https://taskmanager-trello.onrender.com/tasks/${task._id}/column`,
                 { column: newColumn },
                 {
                     headers: {
@@ -31,7 +31,7 @@ const TaskComponent = ({ task }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `http://localhost:3000/tasks/${task._id}`,
+                `https://taskmanager-trello.onrender.com/${task._id}`,
                 editedTask,
                 {
                     headers: {
@@ -50,7 +50,7 @@ const TaskComponent = ({ task }) => {
     const handleDeleteTask = async () => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:3000/tasks/${task._id}`, {
+            await axios.delete(`https://taskmanager-trello.onrender.com/tasks/${task._id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }

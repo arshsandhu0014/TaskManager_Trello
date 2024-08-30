@@ -34,7 +34,11 @@ const TaskForm = () => {
                 Add New Task
             </Button>
 
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal 
+                show={showModal} 
+                onHide={() => setShowModal(false)} 
+                centered
+            >
                 <Modal.Header closeButton>
                     <Modal.Title>Add New Task</Modal.Title>
                 </Modal.Header>
@@ -50,7 +54,7 @@ const TaskForm = () => {
                                 required
                             />
                         </Form.Group>
-                        <Form.Group controlId="formTaskDescription">
+                        <Form.Group controlId="formTaskDescription" className="mt-3">
                             <Form.Label>Task Description</Form.Label>
                             <Form.Control
                                 as="textarea"
@@ -59,7 +63,7 @@ const TaskForm = () => {
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formTaskColumn">
+                        <Form.Group controlId="formTaskColumn" className="mt-3">
                             <Form.Label>Column</Form.Label>
                             <Form.Control
                                 as="select"
@@ -71,9 +75,11 @@ const TaskForm = () => {
                                 <option value="Done">Done</option>
                             </Form.Control>
                         </Form.Group>
-                        <Button  variant="primary" type="submit">
-                            Add Task
-                        </Button>
+                        <div className="mt-4 text-center">
+                            <Button variant="primary" type="submit">
+                                Add Task
+                            </Button>
+                        </div>
                     </Form>
                 </Modal.Body>
             </Modal>
