@@ -1,25 +1,46 @@
-// src/components/Dashboard/Dashboard.js
-
-import React, { useContext, useEffect, useCallback } from 'react';
+import React, { useContext, useEffect, useCallback, useState, useMemo } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TaskColumn from '../components/Task/TaskColumn';
-import TaskForm from '../components/Task/TaskForm';
 import { AuthContext } from '../context/AuthContext';
 import { TaskContext } from '../context/TaskContext';
-
+import TaskNavbar from '../components/Task/TaskNavbar '; // Import TaskNavbar
+import "../index.css";
 const Dashboard = () => {
     const { tasks, fetchTasks } = useContext(AuthContext);
     const { moveTask } = useContext(TaskContext);
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [sortOption, setSortOption] = useState('newest'); // 'newest' or 'oldest'
 
     useEffect(() => {
         fetchTasks(); // Fetch tasks when the component mounts
     }, [fetchTasks]);
 
-    const todoTasks = tasks.filter(task => task.column === 'Todo');
-    const inProgressTasks = tasks.filter(task => task.column === 'InProgress');
-    const doneTasks = tasks.filter(task => task.column === 'Done');
+    // Filtered and sorted tasks
+    const filteredAndSortedTasks = useMemo(() => {
+        const filteredTasks = tasks.filter(task =>
+            task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            task.description.toLowerCase().includes(searchQuery.toLowerCase())
+        );
 
-    // Update the task state in the backend and reflect changes in real-time
+        return filteredTasks.sort((a, b) => {
+            const dateA = new Date(a.createdAt);
+            const dateB = new Date(b.createdAt);
+
+            if (sortOption === 'newest') {
+                return dateB - dateA;
+            } else if (sortOption === 'oldest') {
+                return dateA - dateB;
+            }
+            return 0;
+        });
+    }, [tasks, searchQuery, sortOption]);
+
+    // Separate tasks by column
+    const todoTasks = filteredAndSortedTasks.filter(task => task.column === 'Todo');
+    const inProgressTasks = filteredAndSortedTasks.filter(task => task.column === 'InProgress');
+    const doneTasks = filteredAndSortedTasks.filter(task => task.column === 'Done');
+
     const onDragEnd = useCallback(async (result) => {
         const { destination, source, draggableId } = result;
 
@@ -46,20 +67,27 @@ const Dashboard = () => {
     }, [moveTask, fetchTasks]);
 
     return (
-        <div className='d-flex flex-column justify-content-center align-content-center align-items-center'>
-            <TaskForm />
-            <div className='d-flex flex-column justify-content-center align-items-center m-4 mt-lg-4'>
+        <div className='d-flex flex-column d-flex justify-content-center align-content-center '>
+            
+            <TaskNavbar
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                sortOption={sortOption}
+                onSortChange={setSortOption}
+            />
+
+            <div className='d-flex flex-column justify-content-center align-items-center '>
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId="board" direction="horizontal" type="COLUMN">
                         {(provided) => (
                             <div
-                                className="d-flex justify-content-center m-4 task-board"
+                                className="d-flex justify-content-center  task-board"
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >
-                                <TaskColumn className="d-flex justify-content-center m-2 mx-5" columnName="Todo" tasks={todoTasks} />
-                                <TaskColumn className="d-flex justify-content-center m-2 mx-5" columnName="InProgress" tasks={inProgressTasks} />
-                                <TaskColumn className="d-flex justify-content-center m-2 mx-5" columnName="Done" tasks={doneTasks} />
+                                <TaskColumn columnName="Todo" tasks={todoTasks} />
+                                <TaskColumn columnName="InProgress" tasks={inProgressTasks} />
+                                <TaskColumn columnName="Done" tasks={doneTasks} />
                                 {provided.placeholder}
                             </div>
                         )}
@@ -70,4 +98,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Dashboard

@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* styles.css */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+  backdrop-filter: blur(10px); /* Blurring the background */
+  border-radius: 15px; /* Rounded corners */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+  padding: 20px; /* Optional padding */
+}
+
+.glassmorphism-task-column {
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+  backdrop-filter: blur(8px); /* Slightly less blur for task columns */
+  border-radius: 12px; /* Rounded corners */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+  padding: 10px; /* Optional padding */
+}

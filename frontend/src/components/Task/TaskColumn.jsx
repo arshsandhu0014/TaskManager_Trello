@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useMemo } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { TaskContext } from '../../context/TaskContext';
@@ -12,6 +12,8 @@ const TaskColumn = ({ columnName, tasks }) => {
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [sortOption, setSortOption] = useState('newest');
 
     const handleEditTask = async () => {
         try {
@@ -75,16 +77,69 @@ const TaskColumn = ({ columnName, tasks }) => {
         setEditingTaskId(null);
     };
 
+    // Filtered and sorted tasks
+    const filteredAndSortedTasks = useMemo(() => {
+        const filteredTasks = tasks.filter(task =>
+            task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            task.description.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        return filteredTasks.sort((a, b) => {
+            const dateA = new Date(a.createdAt);
+            const dateB = new Date(b.createdAt);
+
+            if (sortOption === 'newest') {
+                return dateB - dateA;
+            } else if (sortOption === 'oldest') {
+                return dateA - dateB;
+            }
+            return 0;
+        });
+    }, [tasks, searchQuery, sortOption]);
+
+    // Get column-specific styles
+    const getColumnStyle = () => {
+        switch (columnName) {
+            case 'Todo':
+                return { backgroundColor: '#f8d7da', borderColor: '#f5c6cb' };
+            case 'InProgress':
+                return { backgroundColor: '#fff3cd', borderColor: '#ffeeba' };
+            case 'Done':
+                return { backgroundColor: '#d4edda', borderColor: '#c3e6cb' };
+            default:
+                return {};
+        }
+
+    };
+
     return (
         <Droppable droppableId={columnName}>
             {(provided) => (
                 <div
-                    className="d-flex flex-column mx-4 task-column"
+                    className="d-flex flex-column  align-items-center mb-4  mx-2 task-column bg-primary-subtle p-2 py-2 border-1"
+                    style={{ borderRadius: '8px', width: '20rem' }}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                 >
-                    <h2>{columnName}</h2>
-                    {tasks.map((task, index) => (
+                    <h2 className='text-xxl-center mt-2' >{columnName}</h2>
+
+                    {/* Sort option */}
+                    <Form.Group className=" d-flex flex-row justify-content-start align-items-end mb-2  my-2 w-50  ">
+                        <Form.Label className="text-sm w-50">Sort by:</Form.Label>
+                        <Form.Control
+                            className='small w-50'
+                            as="select"
+                            value={sortOption}
+                            onChange={(e) => setSortOption(e.target.value)}
+                           
+                        >
+                            
+                            <option value="newest">Newest</option>
+                            <option value="oldest">Oldest</option>
+                        </Form.Control>
+                    </Form.Group>
+
+                    {filteredAndSortedTasks.map((task, index) => (
                         <Draggable key={task._id} draggableId={task._id} index={index}>
                             {(provided) => (
                                 <div
@@ -93,28 +148,33 @@ const TaskColumn = ({ columnName, tasks }) => {
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                 >
-                                    <Card>
+                                    <Card style={{ ...getColumnStyle(), borderRadius: '8px', width: '18rem' }}>
                                         <Card.Body>
                                             <Card.Title>{task.title}</Card.Title>
                                             <Card.Text>{task.description}</Card.Text>
+                                            <div className='d-flex flex-row justify-content-start '>
                                             <Button
-                                                variant="info"
+                                                
                                                 onClick={() => handleShowDetails(task)}
-                                            >
+                                                className=" btn btn-light mx-1 btn-sm"
+                                                >
                                                 View Details
                                             </Button>
                                             <Button
                                                 variant="warning"
                                                 onClick={() => handleEditClick(task)}
-                                            >
+                                                className="mx-1 btn-sm"
+                                                >
                                                 Edit
                                             </Button>
                                             <Button
                                                 variant="danger"
                                                 onClick={() => handleDeleteTask(task._id)}
-                                            >
+                                                className="mx-1 btn-sm"
+                                                >
                                                 Delete
                                             </Button>
+                                                </div>
                                         </Card.Body>
                                     </Card>
                                 </div>

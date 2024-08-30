@@ -30,7 +30,7 @@ const TaskForm = () => {
 
     return (
         <>
-            <Button variant="primary" onClick={() => setShowModal(true)}>
+            <Button variant="primary w-100 btn-sm" onClick={() => setShowModal(true)}>
                 Add New Task
             </Button>
 
@@ -71,7 +71,7 @@ const TaskForm = () => {
                                 <option value="Done">Done</option>
                             </Form.Control>
                         </Form.Group>
-                        <Button variant="primary" type="submit">
+                        <Button  variant="primary" type="submit">
                             Add Task
                         </Button>
                     </Form>
