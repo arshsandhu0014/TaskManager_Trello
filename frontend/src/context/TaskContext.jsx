@@ -11,7 +11,7 @@ export const TaskProvider = ({ children }) => {
         try {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
-            const response = await axios.get('https://taskmanager-trello.onrender.com/tasks', {
+            const response = await axios.get('https://task-manager-trello-backend.vercel.app/tasks', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }
@@ -28,7 +28,7 @@ export const TaskProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
             const response = await axios.post(
-                'https://taskmanager-trello.onrender.com/tasks',
+                'https://task-manager-trello-backend.vercel.app/tasks',
                 task,
                 {
                     headers: {
@@ -49,7 +49,7 @@ export const TaskProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
             const response = await axios.put(
-                `https://taskmanager-trello.onrender.com/tasks/${updatedTask._id}/column`,
+                `https://task-manager-trello-backend.vercel.app/tasks/${updatedTask._id}/column`,
                 { column: updatedTask.column },
                 {
                     headers: {
@@ -74,7 +74,7 @@ export const TaskProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
             const response = await axios.put(
-                `https://taskmanager-trello.onrender.com/tasks/${id}/column`,
+                `https://task-manager-trello-backend.vercel.app/tasks/${id}/column`,
                 { column: toColumn },
                 {
                     headers: {
