@@ -12,18 +12,20 @@ const protect = require('./middleware/authMiddleware');
 
 const app = express();
 
-// Set up CORS to allow only your frontend's origin
-const allowedOrigins = ['https://task-manager-trello-2yri.vercel.app']; // Replace with your actual frontend URL
+// CORS Configuration
+const allowedOrigins = ['https://task-manager-trello-2yri.vercel.app']; // Your frontend URL
 app.use(cors({
-    origin: function(origin, callback) {
+    origin: function (origin, callback) {
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
         }
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204
 }));
 
 app.use(express.json());
@@ -88,6 +90,7 @@ app.post('/auth/google', async (req, res) => {
 app.use('/auth', authRoutes);
 app.use('/tasks', protect, taskRoutes);
 
+// Handle errors
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
