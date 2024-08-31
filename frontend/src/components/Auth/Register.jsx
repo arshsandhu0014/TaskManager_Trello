@@ -45,13 +45,12 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('https://taskmanager-trello.onrender.com/auth/register', {
+      await axios.post('https://taskmanager-trello.onrender.com/auth/register', {
         firstName,
         lastName,
         username,
         password,
       });
-      
       showToast('Registration successful! Please login with your credentials.', 'success');
       navigate('/login');
     } catch (error) {
@@ -116,7 +115,7 @@ const Register = () => {
           </div>
         </div>
       </div>
-     
+      {/* Bootstrap Toast Container */}
       <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 11 }}>
         <div
           className={`toast ${toastType === 'success' ? 'bg-success text-light' : 'bg-danger text-light'}`}
