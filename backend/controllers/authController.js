@@ -1,8 +1,11 @@
+require('dotenv').config(); // Add this line to load .env variables
+
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const secretKey = 'your_secret_key_here'; // Hardcoded secret key
+// Retrieve environment variables
+const secretKey = process.env.JWT_SECRET;
 
 const register = async (req, res) => {
   try {
@@ -43,7 +46,6 @@ const login = async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         username: user.username
-        
       }
     });
   } catch (error) {
