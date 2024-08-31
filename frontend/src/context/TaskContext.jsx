@@ -35,7 +35,7 @@ export const TaskProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             if (!token) throw new Error('No token found');
 
-            console.log('Adding task with token:', token); // Debugging log
+           
             const response = await axios.post(
                 'https://taskmanager-trello.onrender.com/tasks',
                 task,
