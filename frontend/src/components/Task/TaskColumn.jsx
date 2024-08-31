@@ -50,7 +50,7 @@ const TaskColumn = ({ columnName, tasks }) => {
         if (confirmDelete) {
             try {
                 const token = localStorage.getItem('token');
-                await axios.delete(`https://task-manager-trello-backend.vercel.app/tasks/${taskId}`, {
+                await axios.delete(`https://taskmanager-trello.onrender.com/tasks/${taskId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }

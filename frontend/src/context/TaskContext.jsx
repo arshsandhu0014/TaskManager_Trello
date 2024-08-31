@@ -11,7 +11,7 @@ export const TaskProvider = ({ children }) => {
         try {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
-            const response = await axios.get('https://task-manager-trello-backend.vercel.app/tasks', {
+            const response = await axios.get('https://taskmanager-trello.onrender.com/tasks', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const secretKey = 'your_secret_key_here'; // Hardcoded secret key
+const secretKey = 'yo#$ecret$%*&^ker'; 
 
 const protect = (req, res, next) => {
     const authHeader = req.headers.authorization;

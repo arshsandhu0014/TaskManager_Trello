@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
                 throw new Error('No token found');
             }
 
-            const response = await axios.get('https://task-manager-trello-backend.vercel.app/tasks', {
+            const response = await axios.get('https://taskmanager-trello.onrender.com/tasks', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
