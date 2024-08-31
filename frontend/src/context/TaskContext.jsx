@@ -49,7 +49,7 @@ export const TaskProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
             const response = await axios.put(
-                `https://task-manager-trello-backend.vercel.app/tasks/${updatedTask._id}/column`,
+                `https://taskmanager-trello.onrender.com/tasks/${updatedTask._id}/column`,
                 { column: updatedTask.column },
                 {
                     headers: {
@@ -74,7 +74,7 @@ export const TaskProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             console.log('Token:', token); // Debugging log
             const response = await axios.put(
-                `https://task-manager-trello-backend.vercel.app/tasks/${id}/column`,
+                `https://taskmanager-trello.onrender.com/tasks/${id}/column`,
                 { column: toColumn },
                 {
                     headers: {
