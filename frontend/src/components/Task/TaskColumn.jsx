@@ -109,27 +109,31 @@ const TaskColumn = ({ columnName, tasks }) => {
             default:
                 return {};
         }
+
     };
 
     return (
         <Droppable droppableId={columnName}>
             {(provided) => (
                 <div
-                    className="task-column bg-light border border-secondary rounded p-2 mb-4 mx-2"
-                    style={{ ...getColumnStyle(), width: '100%', minWidth: '15rem' }}
+                    className="d-flex flex-column  align-items-center mb-4  mx-2 task-column bg-primary-subtle p-2 py-2 border-1"
+                    style={{ borderRadius: '8px', width: '20rem' }}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                 >
-                    <h2 className='text-center mb-3'>{columnName}</h2>
+                    <h2 className='text-xxl-center mt-2' >{columnName}</h2>
 
                     {/* Sort option */}
-                    <Form.Group className="mb-3">
-                        <Form.Label>Sort by:</Form.Label>
+                    <Form.Group className=" d-flex flex-row justify-content-start align-items-end mb-2  my-2 w-50  ">
+                        <Form.Label className="text-sm w-50">Sort by:</Form.Label>
                         <Form.Control
+                            className='small w-50'
                             as="select"
                             value={sortOption}
                             onChange={(e) => setSortOption(e.target.value)}
+                           
                         >
+                            
                             <option value="newest">Newest</option>
                             <option value="oldest">Oldest</option>
                         </Form.Control>
@@ -144,32 +148,33 @@ const TaskColumn = ({ columnName, tasks }) => {
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                 >
-                                    <Card style={{ ...getColumnStyle(), borderRadius: '8px',width: '18rem' }}>
+                                    <Card style={{ ...getColumnStyle(), borderRadius: '8px', width: '18rem' }}>
                                         <Card.Body>
                                             <Card.Title>{task.title}</Card.Title>
                                             <Card.Text>{task.description}</Card.Text>
-                                            <div className='d-flex flex-column flex-sm-row justify-content-between'>
-                                                <Button
-                                                    variant="light"
-                                                    onClick={() => handleShowDetails(task)}
-                                                    className="mb-2 mb-sm-0"
+                                            <div className='d-flex flex-row justify-content-start '>
+                                            <Button
+                                                
+                                                onClick={() => handleShowDetails(task)}
+                                                className=" btn btn-light mx-1 btn-sm"
                                                 >
-                                                    View Details
-                                                </Button>
-                                                <Button
-                                                    variant="warning"
-                                                    onClick={() => handleEditClick(task)}
-                                                    className="mb-2 mb-sm-0"
+                                                View Details
+                                            </Button>
+                                            <Button
+                                                variant="warning"
+                                                onClick={() => handleEditClick(task)}
+                                                className="mx-1 btn-sm"
                                                 >
-                                                    Edit
-                                                </Button>
-                                                <Button
-                                                    variant="danger"
-                                                    onClick={() => handleDeleteTask(task._id)}
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                variant="danger"
+                                                onClick={() => handleDeleteTask(task._id)}
+                                                className="mx-1 btn-sm"
                                                 >
-                                                    Delete
-                                                </Button>
-                                            </div>
+                                                Delete
+                                            </Button>
+                                                </div>
                                         </Card.Body>
                                     </Card>
                                 </div>
@@ -189,6 +194,8 @@ const TaskColumn = ({ columnName, tasks }) => {
                                     <h4>{selectedTask.title}</h4>
                                     <p>{selectedTask.description}</p>
                                     <p><strong>Created At:</strong> {selectedTask.createdAt}</p>
+                                   
+                                    {/* Add more fields as needed */}
                                 </div>
                             )}
                         </Modal.Body>
@@ -201,46 +208,46 @@ const TaskColumn = ({ columnName, tasks }) => {
 
                     {/* Modal for editing tasks */}
                     <Modal show={showEditModal} onHide={handleCloseEditModal} centered>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Edit Task</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Task Title</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        value={editedTask.title}
-                                        onChange={(e) =>
-                                            setEditedTask({ ...editedTask, title: e.target.value })
-                                        }
-                                        placeholder="Edit title"
-                                        required
-                                    />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Task Description</Form.Label>
-                                    <Form.Control
-                                        as="textarea"
-                                        value={editedTask.description}
-                                        onChange={(e) =>
-                                            setEditedTask({ ...editedTask, description: e.target.value })
-                                        }
-                                        placeholder="Edit description"
-                                        rows={3}
-                                    />
-                                </Form.Group>
-                            </Form>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={handleCloseEditModal}>
-                                Cancel
-                            </Button>
-                            <Button variant="primary" onClick={handleEditTask}>
-                                Save
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
+            <Modal.Header closeButton>
+                <Modal.Title>Edit Task</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Task Title</Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={editedTask.title}
+                            onChange={(e) =>
+                                setEditedTask({ ...editedTask, title: e.target.value })
+                            }
+                            placeholder="Edit title"
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Task Description</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            value={editedTask.description}
+                            onChange={(e) =>
+                                setEditedTask({ ...editedTask, description: e.target.value })
+                            }
+                            placeholder="Edit description"
+                            rows={3}
+                        />
+                    </Form.Group>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseEditModal}>
+                    Cancel
+                </Button>
+                <Button variant="primary" onClick={handleEditTask}>
+                    Save
+                </Button>
+            </Modal.Footer>
+        </Modal>
                 </div>
             )}
         </Droppable>
