@@ -8,13 +8,13 @@ export const TaskProvider = ({ children }) => {
     const [loading, setLoading] = useState(true); // Track loading state
     const [error, setError] = useState(null); // Track error state
 
-    // Function to fetch tasks from the server
+   
     const fetchTasks = async () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) throw new Error('No token found');
             
-            console.log('Fetching tasks with token:', token); // Debugging log
+          
             const response = await axios.get('https://taskmanager-trello.onrender.com/tasks', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -59,7 +59,7 @@ export const TaskProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             if (!token) throw new Error('No token found');
 
-            console.log('Updating task column with token:', token); // Debugging log
+            
             const response = await axios.put(
                 `https://taskmanager-trello.onrender.com/tasks/${updatedTask._id}/column`,
                 { column: updatedTask.column },
@@ -87,7 +87,7 @@ export const TaskProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             if (!token) throw new Error('No token found');
 
-            console.log('Moving task with token:', token); // Debugging log
+           
             const response = await axios.put(
                 `https://taskmanager-trello.onrender.com/tasks/${id}/column`,
                 { column: toColumn },

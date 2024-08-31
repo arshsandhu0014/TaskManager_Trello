@@ -42,7 +42,7 @@ const Login = ({ onLogin }) => {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       
-      console.log('Login successful!', response.data);
+      
       onLogin(response.data.user);
       navigate('/dashboard');
     } catch (error) {
@@ -60,7 +60,7 @@ const Login = ({ onLogin }) => {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       
-      console.log('Google login successful!', res.data);
+     
       onLogin(res.data.user);
       navigate('/dashboard');
     } catch (error) {
