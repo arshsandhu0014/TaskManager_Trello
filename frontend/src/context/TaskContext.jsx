@@ -5,12 +5,16 @@ export const TaskContext = createContext();
 
 export const TaskProvider = ({ children }) => {
     const [tasks, setTasks] = useState([]);
+    const [loading, setLoading] = useState(true); // Track loading state
+    const [error, setError] = useState(null); // Track error state
 
     // Function to fetch tasks from the server
     const fetchTasks = async () => {
         try {
             const token = localStorage.getItem('token');
-            console.log('Token:', token); // Debugging log
+            if (!token) throw new Error('No token found');
+            
+            console.log('Fetching tasks with token:', token); // Debugging log
             const response = await axios.get('https://taskmanager-trello.onrender.com/tasks', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -19,6 +23,9 @@ export const TaskProvider = ({ children }) => {
             setTasks(response.data);
         } catch (error) {
             console.error('Error fetching tasks:', error);
+            setError('Failed to fetch tasks');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -26,7 +33,9 @@ export const TaskProvider = ({ children }) => {
     const addTask = async (task) => {
         try {
             const token = localStorage.getItem('token');
-            console.log('Token:', token); // Debugging log
+            if (!token) throw new Error('No token found');
+
+            console.log('Adding task with token:', token); // Debugging log
             const response = await axios.post(
                 'https://taskmanager-trello.onrender.com/tasks',
                 task,
@@ -40,6 +49,7 @@ export const TaskProvider = ({ children }) => {
             setTasks([...tasks, response.data]);
         } catch (error) {
             console.error('Error adding task:', error);
+            setError('Failed to add task');
         }
     };
 
@@ -47,7 +57,9 @@ export const TaskProvider = ({ children }) => {
     const updateTaskColumn = async (updatedTask) => {
         try {
             const token = localStorage.getItem('token');
-            console.log('Token:', token); // Debugging log
+            if (!token) throw new Error('No token found');
+
+            console.log('Updating task column with token:', token); // Debugging log
             const response = await axios.put(
                 `https://taskmanager-trello.onrender.com/tasks/${updatedTask._id}/column`,
                 { column: updatedTask.column },
@@ -64,15 +76,18 @@ export const TaskProvider = ({ children }) => {
                 )
             );
         } catch (error) {
-            console.error('Error updating task:', error);
+            console.error('Error updating task column:', error);
+            setError('Failed to update task');
         }
     };
 
     // Function to move a task to a different column
-    const moveTask = async ({ id, fromColumn, toColumn }) => {
+    const moveTask = async ({ id, toColumn }) => {
         try {
             const token = localStorage.getItem('token');
-            console.log('Token:', token); // Debugging log
+            if (!token) throw new Error('No token found');
+
+            console.log('Moving task with token:', token); // Debugging log
             const response = await axios.put(
                 `https://taskmanager-trello.onrender.com/tasks/${id}/column`,
                 { column: toColumn },
@@ -90,6 +105,7 @@ export const TaskProvider = ({ children }) => {
             );
         } catch (error) {
             console.error('Error moving task:', error);
+            setError('Failed to move task');
         }
     };
 
@@ -99,7 +115,7 @@ export const TaskProvider = ({ children }) => {
     }, []);
 
     return (
-        <TaskContext.Provider value={{ tasks, setTasks, addTask, updateTaskColumn, moveTask, fetchTasks }}>
+        <TaskContext.Provider value={{ tasks, setTasks, addTask, updateTaskColumn, moveTask, fetchTasks, loading, error }}>
             {children}
         </TaskContext.Provider>
     );
