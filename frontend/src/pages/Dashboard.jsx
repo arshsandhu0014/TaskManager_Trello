@@ -3,10 +3,8 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TaskColumn from '../components/Task/TaskColumn';
 import { AuthContext } from '../context/AuthContext';
 import { TaskContext } from '../context/TaskContext';
-import TaskNavbar from '../components/Task/TaskNavbar ';
-import '../index.css'; // Ensure this file contains any custom styles
-import { Container, Row, Col } from 'react-bootstrap'; // Import Bootstrap components
-
+import TaskNavbar from '../components/Task/TaskNavbar '; // Import TaskNavbar
+import "../index.css";
 const Dashboard = () => {
     const { tasks, fetchTasks } = useContext(AuthContext);
     const { moveTask } = useContext(TaskContext);
@@ -69,7 +67,8 @@ const Dashboard = () => {
     }, [moveTask, fetchTasks]);
 
     return (
-        <Container fluid className='p-3'>
+        <div className='d-flex flex-column d-flex justify-content-center align-content-center '>
+            
             <TaskNavbar
                 searchQuery={searchQuery}
                 onSearchChange={setSearchQuery}
@@ -77,28 +76,26 @@ const Dashboard = () => {
                 onSortChange={setSortOption}
             />
 
-            <Row className='mt-3'>
-                <Col xs={12} md={4}>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId="board" direction="horizontal" type="COLUMN">
-                            {(provided) => (
-                                <div
-                                    className="d-flex flex-column flex-md-row justify-content-between align-items-start"
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                >
-                                    <TaskColumn columnName="Todo" tasks={todoTasks} />
-                                    <TaskColumn columnName="InProgress" tasks={inProgressTasks} />
-                                    <TaskColumn columnName="Done" tasks={doneTasks} />
-                                    {provided.placeholder}
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
-                </Col>
-            </Row>
-        </Container>
+            <div className='d-flex flex-column justify-content-center align-items-center '>
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="board" direction="horizontal" type="COLUMN">
+                        {(provided) => (
+                            <div
+                                className="d-flex justify-content-center  task-board"
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                            >
+                                <TaskColumn columnName="Todo" tasks={todoTasks} />
+                                <TaskColumn columnName="InProgress" tasks={inProgressTasks} />
+                                <TaskColumn columnName="Done" tasks={doneTasks} />
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </div>
+        </div>
     );
 };
 
-export default Dashboard;
+export default Dashboard

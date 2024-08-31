@@ -45,13 +45,12 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('https://taskmanager-trello.onrender.com/auth/register', {
+       await axios.post('https://taskmanager-trello.onrender.com/auth/register', {
         firstName,
         lastName,
         username,
         password,
       });
-      console.log('Registration successful!');
       showToast('Registration successful! Please login with your credentials.', 'success');
       navigate('/login');
     } catch (error) {
