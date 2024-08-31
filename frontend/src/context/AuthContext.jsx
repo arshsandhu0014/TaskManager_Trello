@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -25,8 +24,19 @@ export const AuthProvider = ({ children }) => {
 
             setTasks(response.data);
         } catch (error) {
-            console.error('Error fetching tasks:', error);
-            setError('Failed to fetch tasks. Please try again later.');
+            if (error.response) {
+                // Server responded with a status other than 2xx
+                console.error('Error fetching tasks:', error.response.data);
+                setError(`Failed to fetch tasks: ${error.response.data.message || 'Please try again later.'}`);
+            } else if (error.request) {
+                // Request was made but no response received
+                console.error('Error fetching tasks: No response received', error.request);
+                setError('Failed to fetch tasks: No response from server.');
+            } else {
+                // Other errors (e.g., network issues)
+                console.error('Error fetching tasks:', error.message);
+                setError(`Failed to fetch tasks: ${error.message}`);
+            }
         } finally {
             setLoading(false);
         }

@@ -19,7 +19,7 @@ const TaskColumn = ({ columnName, tasks }) => {
         try {
             const token = localStorage.getItem('token');
             await axios.put(
-                `https://task-manager-trello-backend.vercel.app/tasks/${editingTaskId}`,
+                `https://taskmanager-trello.onrender.com/tasks/${editingTaskId}`,
                 editedTask,
                 {
                     headers: {
