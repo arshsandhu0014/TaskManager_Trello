@@ -148,7 +148,7 @@ const TaskColumn = ({ columnName, tasks }) => {
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                 >
-                                    <Card style={{ ...getColumnStyle(), borderRadius: '8px', width: '18rem' }}>
+                                    <Card style={{ ...getColumnStyle(), borderRadius: '8px', width: '20rem' }}>
                                         <Card.Body>
                                             <Card.Title>{task.title}</Card.Title>
                                             <Card.Text>{task.description}</Card.Text>
